@@ -1,0 +1,4 @@
+rootProject.name = 'rest_for_gatling'
+include 'model'
+include 'service'
+include 'rest-app'
