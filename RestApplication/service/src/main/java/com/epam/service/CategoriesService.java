@@ -11,7 +11,7 @@ public class CategoriesService {
     CategoriesProperties categoriesProperties;
 
     public boolean checkCategoryWithId(Integer id) {
-        return id > categoriesProperties.getMin_id() && id <= categoriesProperties.getMax_id();
+        return id > categoriesProperties.getMinId() && id <= categoriesProperties.getMaxId();
     }
 
     public boolean checkCategoryWithSubcategories(String subcategories) {

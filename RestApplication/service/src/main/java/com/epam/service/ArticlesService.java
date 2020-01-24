@@ -11,6 +11,6 @@ public class ArticlesService {
     ArticlesProperties articlesProperties;
 
     public boolean checkArticleWithId(Integer id) {
-        return id > articlesProperties.getMin_id() && id <= articlesProperties.getMax_id();
+        return id > articlesProperties.getMinId() && id <= articlesProperties.getMaxId();
     }
 }

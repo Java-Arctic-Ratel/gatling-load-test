@@ -6,22 +6,22 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties("articles")
 public class ArticlesProperties {
-    private int min_id;
-    private int max_id;
+    private int minId;
+    private int maxId;
 
-    public int getMin_id() {
-        return min_id;
+    public int getMinId() {
+        return minId;
     }
 
-    public void setMin_id(int min_id) {
-        this.min_id = min_id;
+    public void setMinId(int minId) {
+        this.minId = minId;
     }
 
-    public int getMax_id() {
-        return max_id;
+    public int getMaxId() {
+        return maxId;
     }
 
-    public void setMax_id(int max_id) {
-        this.max_id = max_id;
+    public void setMaxId(int maxId) {
+        this.maxId = maxId;
     }
 }
