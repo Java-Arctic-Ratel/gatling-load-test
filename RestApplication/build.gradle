@@ -1,0 +1,45 @@
+buildscript {
+    ext {
+        projectGroupName = 'com.epam'
+        projectVersion = '1.0-SNAPSHOT'
+        springBootVersion = '2.2.0.RELEASE'
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
+allprojects {
+    group projectGroupName
+    version projectVersion
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+    apply plugin: 'io.spring.dependency-management'
+
+    sourceCompatibility = 11
+    targetCompatibility = 11
+
+    repositories {
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:${springBootVersion}")
+        }
+    }
+
+    dependencies {
+        compile "org.springframework.boot:spring-boot-starter"
+        compile "org.springframework.boot:spring-boot-starter-web"
+    }
+}
