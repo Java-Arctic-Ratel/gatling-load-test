@@ -1,47 +1,49 @@
 package com.epam.gatling.runner
 
-import com.epam.gatling.config.{ArticlesConfig, SearchConfig}
-import com.epam.gatling.scenario.{ArticlesScenario, SearchScenario}
-import com.typesafe.config.ConfigFactory
+import com.epam.gatling.config.{ArticlesConfig, CategoriesConfig, SearchConfig, TotalConfig}
+import com.epam.gatling.scenario.{ArticlesScenario, CategoriesScenario, SearchScenario}
 import io.gatling.core.Predef.{atOnceUsers, rampUsers, _}
 import io.gatling.core.scenario.Simulation
+import io.gatling.core.structure.{PopulationBuilder, ScenarioBuilder}
 
 import scala.concurrent.duration._
 
+object StoragePerformanceTest {
+
+  val searchScenario: ScenarioBuilder = scenario("SearchScenarioSimulation").exec(SearchScenario.searchScenario)
+  val articlesScenario: ScenarioBuilder = scenario("ArticlesScenarioSimulation").exec(ArticlesScenario.articlesScenario)
+  val categoriesScenario: ScenarioBuilder = scenario("CategoriesScenarioSimulation").exec(CategoriesScenario.categoriesScenario)
+}
+
 class RunnerScenariosSimulation extends Simulation {
-  val config = ConfigFactory.load()
 
-  private val create_search = SearchScenario.searchScenario
-    .inject(
+  import StoragePerformanceTest._
+
+  var scenarios: List[PopulationBuilder] = List()
+
+  if (SearchConfig.search_enabled.toBoolean) {
+    scenarios = scenarios :+ searchScenario.inject(
       rampUsers(SearchConfig.search_setup_users_start_rate) during (SearchConfig.search_setup_duration seconds),
       rampUsers(SearchConfig.search_setup_users_start_rate) during (SearchConfig.search_setup_duration seconds),
-      atOnceUsers(SearchConfig.search_setup_users_start_rate))
+      atOnceUsers(SearchConfig.search_setup_users_start_rate)
+    )
+  }
 
-  private val create_articles = ArticlesScenario.articlesScenario
-    .inject(
+  if (ArticlesConfig.articles_enabled.toBoolean) {
+    scenarios = scenarios :+ articlesScenario.inject(
       rampUsers(ArticlesConfig.articles_setup_users_start_rate) during (ArticlesConfig.articles_setup_duration seconds),
       rampUsers(ArticlesConfig.articles_setup_users_start_rate) during (ArticlesConfig.articles_setup_duration seconds),
-      atOnceUsers(ArticlesConfig.articles_setup_users_start_rate))
+      atOnceUsers(ArticlesConfig.articles_setup_users_start_rate)
+    )
+  }
 
-//  var fruits = new ListBuffer[Object]()
-//
-//    if (SearchConfig.search_enabled.toBoolean) {
-//      fruits += create_search
-//    }
-//
-//    if (ArticlesConfig.articles_enabled.toBoolean) {
-//      fruits += create_articles
-//    }
-//
-//  val fruitsList: List[Object] = fruits.toList
+  if (CategoriesConfig.categories_enabled.toBoolean) {
+    scenarios = scenarios :+ categoriesScenario.inject(
+      rampUsers(CategoriesConfig.categories_setup_users_start_rate) during (CategoriesConfig.categories_setup_duration seconds),
+      rampUsers(CategoriesConfig.categories_setup_users_start_rate) during (CategoriesConfig.categories_setup_duration seconds),
+      atOnceUsers(CategoriesConfig.categories_setup_users_start_rate)
+    )
+  }
 
-  if (SearchConfig.search_enabled.toBoolean && ArticlesConfig.articles_enabled.toBoolean) {
-    setUp(create_search, create_articles).protocols(SearchConfig.search_http_protocol, ArticlesConfig.articles_http_protocol)
-  }
-  else if (SearchConfig.search_enabled.toBoolean) {
-    setUp(create_search).protocols(SearchConfig.search_http_protocol)
-  }
-  else if (ArticlesConfig.articles_enabled.toBoolean) {
-    setUp(create_articles).protocols(ArticlesConfig.articles_http_protocol)
-  }
+  setUp(scenarios).protocols(TotalConfig.total_http_protocol)
 }

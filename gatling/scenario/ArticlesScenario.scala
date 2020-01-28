@@ -1,6 +1,6 @@
 package com.epam.gatling.scenario
 
-import com.epam.gatling.config.{ArticlesConfig}
+import com.epam.gatling.config.{ArticlesConfig, TotalConfig}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -12,7 +12,10 @@ object ArticlesScenario {
 
         .exec(http("Request_articles_ID_GET")
           .get("/articles/${articles_id_random}")
-          .headers(ArticlesConfig.articles_headers_0)
+          .headers(TotalConfig.total_headers_0)
+          .check(
+            status.is(200)
+          )
         )
         .exec { session => println(session); session }
         .pause(ArticlesConfig.articles_pause_time)

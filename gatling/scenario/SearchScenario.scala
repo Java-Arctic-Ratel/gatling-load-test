@@ -1,6 +1,6 @@
 package com.epam.gatling.scenario
 
-import com.epam.gatling.config.SearchConfig
+import com.epam.gatling.config.{SearchConfig, TotalConfig}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 
@@ -13,7 +13,10 @@ object SearchScenario {
 
         .exec(http("Request_search_GET")
           .get("/search?account=${search_account_random}&translation=${search_transtation_random}")
-          .headers(SearchConfig.search_headers_0)
+          .headers(TotalConfig.total_headers_0)
+          .check(
+            status.is(200)
+          )
         )
         .exec { session => println(session); session }
         .pause(SearchConfig.search_pause_time)

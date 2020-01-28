@@ -9,8 +9,6 @@ import scala.util.Random
 object SearchConfig {
   val config = ConfigFactory.load()
 
-  val search_user_url = config.getString("test.search.protocol") + "://" + config.getString("test.search.host") + ":" + config.getString("test.search.server.port") + config.getString("test.search.point.api-v1")
-
   // Search transtation random
   val search_transtation_string = config.getString("test.search.translation")
   val search_transtation_list: List[String] = search_transtation_string.split(",").map(_.trim).toList
@@ -29,16 +27,6 @@ object SearchConfig {
   val search_setup_users_start_rate = config.getString("test.simulation.search.setup-users-start-rate").toInt // MIN users INJECTED in ONE second
   val search_setup_users_end_rate = config.getString("test.simulation.search.setup-users-end-rate").toInt // MAX users INJECTED in ONE second
   val search_setup_duration = config.getString("test.simulation.search.setup-duration").toInt // Total duration in seconds
-
-  // HTTP Protocol
-  val search_http_protocol = http
-    .baseUrl(search_user_url)
-    .acceptHeader("application/json")
-
-  // HEADER:
-  val search_headers_0 = Map(
-    "Proxy-Connection" -> "keep-alive",
-    "Upgrade-Insecure-Requests" -> "1")
 
   // Enabled
   val search_enabled = config.getString("test.search.enabled")
