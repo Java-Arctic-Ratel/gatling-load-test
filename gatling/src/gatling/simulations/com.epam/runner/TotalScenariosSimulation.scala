@@ -8,16 +8,16 @@ import io.gatling.core.structure.{PopulationBuilder, ScenarioBuilder}
 
 import scala.concurrent.duration._
 
-object StoragePerformanceTest {
+object TotalScenariosSimulation {
 
   val searchScenario: ScenarioBuilder = scenario("SearchScenarioSimulation").exec(SearchScenario.searchScenario)
   val articlesScenario: ScenarioBuilder = scenario("ArticlesScenarioSimulation").exec(ArticlesScenario.articlesScenario)
   val categoriesScenario: ScenarioBuilder = scenario("CategoriesScenarioSimulation").exec(CategoriesScenario.categoriesScenario)
 }
 
-class RunnerScenariosSimulation extends Simulation {
+class TotalScenariosSimulation extends Simulation {
 
-  import StoragePerformanceTest._
+  import TotalScenariosSimulation._
 
   var scenarios: List[PopulationBuilder] = List()
 

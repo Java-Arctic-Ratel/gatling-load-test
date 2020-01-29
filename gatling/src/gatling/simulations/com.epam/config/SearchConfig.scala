@@ -1,8 +1,6 @@
 package com.epam.gatling.config
 
 import com.typesafe.config.ConfigFactory
-import io.gatling.core.Predef._
-import io.gatling.http.Predef._
 
 import scala.util.Random
 
